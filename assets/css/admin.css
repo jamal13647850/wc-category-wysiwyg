@@ -1,0 +1,36 @@
+/* WC Category WYSIWYG Admin Styles */
+
+.wc-category-wysiwyg-editor {
+    margin: 10px 0;
+}
+
+.wp-editor-wrap {
+    margin-top: 10px;
+}
+
+/* Hide default description field */
+.term-description-wrap textarea#description {
+    display: none !important;
+}
+
+/* Editor styling for better integration */
+#description_ifr {
+    min-height: 200px;
+}
+
+/* Category form improvements */
+.form-field.term-description-wrap {
+    margin-bottom: 20px;
+}
+
+.form-field.term-description-wrap label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-field.term-description-wrap p.description {
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
+}
