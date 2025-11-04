@@ -1,0 +1,42 @@
+# Persian (فارسی) translation for WC Category WYSIWYG
+# Copyright (C) 2025 Sayyed Jamal Ghasemi
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WC Category WYSIWYG 2.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-category-wysiwyg\n"
+"POT-Creation-Date: 2025-11-04T03:38:16+00:00\n"
+"PO-Revision-Date: 2025-11-04 07:45+0330\n"
+"Last-Translator: Sayyed Jamal Ghasemi <info@jamalghasemi.com>\n"
+"Language-Team: Persian <info@jamalghasemi.com>\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wc-category-wysiwyg\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Plugin Name of the plugin
+#: wc-category-wysiwyg.php
+msgid "WC Category WYSIWYG"
+msgstr "ویرایشگر WYSIWYG برای دسته‌بندی محصولات"
+
+#. Description of the plugin
+#: wc-category-wysiwyg.php
+msgid "Adds WYSIWYG editor to WooCommerce product category descriptions"
+msgstr "اضافه کردن ویرایشگر WYSIWYG به توضیحات دسته‌بندی محصولات ووکامرس"
+
+#. Author of the plugin
+#: wc-category-wysiwyg.php
+msgid "Sayyed Jamal Ghasemi"
+msgstr "سیید جمال قاسمی"
+
+#. Author URI of the plugin
+#: wc-category-wysiwyg.php
+msgid "https://jamalghasemi.com"
+msgstr "https://jamalghasemi.com"
+
+#: inc/class-wc-category-wysiwyg.php:171
+msgid "Description"
+msgstr "توضیحات"
