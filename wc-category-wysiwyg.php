@@ -21,8 +21,6 @@ if (!defined('ABSPATH')) {
 }
 
 define('WC_CATEGORY_WYSIWYG_VERSION', '1.0.0');
-define('WC_CATEGORY_WYSIWYG_PLUGIN_DIR', __DIR__);
-define('WC_CATEGORY_WYSIWYG_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 /**
  * Main plugin class
@@ -46,16 +44,7 @@ class WC_Category_WYSIWYG {
             return;
         }
         
-        $this->includes();
         $this->init_hooks();
-    }
-    
-    /**
-     * Include required files
-     */
-    private function includes() {
-        require_once WC_CATEGORY_WYSIWYG_PLUGIN_DIR . '/includes/class-wc-category-wysiwyg-editor.php';
-        require_once WC_CATEGORY_WYSIWYG_PLUGIN_DIR . '/includes/class-wc-category-wysiwyg-frontend.php';
     }
     
     /**
@@ -64,10 +53,13 @@ class WC_Category_WYSIWYG {
     private function init_hooks() {
         // Admin hooks
         if (is_admin()) {
-            add_action('product_cat_add_form_fields', [$this, 'add_category_editor_field']);
-            add_action('product_cat_edit_form_fields', [$this, 'edit_category_editor_field']);
-            add_action('created_product_cat', [$this, 'save_category_editor_field']);
-            add_action('edited_product_cat', [$this, 'save_category_editor_field']);
+            add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
+            add_action('product_cat_add_form', [$this, 'add_wysiwyg_to_description']);
+            add_action('product_cat_edit_form', [$this, 'add_wysiwyg_to_description']);
+            add_action('product_cat_add_form_fields', [$this, 'add_category_nonce']);
+            add_action('product_cat_edit_form_fields', [$this, 'add_category_nonce']);
+            add_action('created_product_cat', [$this, 'verify_category_nonce'], 10, 2);
+            add_action('edited_product_cat', [$this, 'verify_category_nonce'], 10, 2);
         }
         
         // Frontend hooks
@@ -75,56 +67,93 @@ class WC_Category_WYSIWYG {
     }
     
     /**
-     * Add editor field to category add form
+     * Enqueue admin scripts
      */
-    public function add_category_editor_field() {
-        ?>
-        <div class="form-field term-description-wrap">
-            <label for="description"><?php _e('Description', 'wc-category-wysiwyg'); ?></label>
-            <?php 
-            wp_editor('', 'description', [
-                'textarea_name' => 'description',
-                'textarea_rows' => 10,
-                'media_buttons' => true,
-                'teeny' => false,
-                'wpautop' => true
-            ]);
-            ?>
-            <p><?php _e('The description is not prominent by default; however, some themes may show it.', 'wc-category-wysiwyg'); ?></p>
-        </div>
-        <?php
+    public function enqueue_admin_scripts($hook) {
+        global $current_screen;
+        
+        if ($current_screen && $current_screen->id === 'product_cat') {
+            // Enqueue WordPress editor scripts
+            wp_enqueue_editor();
+            
+            // Add custom script to enhance the description field
+            wp_add_inline_script('editor', '
+                jQuery(document).ready(function($) {
+                    // Wait for editor to be available
+                    if (typeof wp.editor === "undefined") {
+                        return;
+                    }
+                    
+                    // Hide the default textarea
+                    var $textarea = $("textarea#description");
+                    $textarea.hide();
+                    
+                    // Create container for WYSIWYG editor
+                    var editorContainer = $("<div id=\"description-wysiwyg-container\" style=\"margin-top: 10px;\"></div>");
+                    $textarea.after(editorContainer);
+                    
+                    // Initialize WordPress editor
+                    wp.editor.initialize("description-wysiwyg", {
+                        tinymce: {
+                            wpautop: true,
+                            plugins: "charmap colorpicker compat3s directionality fullscreen hr image lists media paste tabfocus textcolor wordpress wpautoresize wpdialogs wpeditimage wpemoji wpgallery wplink wptextpattern wpview",
+                            toolbar1: "formatselect bold italic | bullist numlist | blockquote | alignleft aligncenter alignright | link unlink | wp_more",
+                            toolbar2: "strikethrough hr forecolor | pastetext removeformat | charmap | outdent indent | undo redo | wp_help",
+                            content_css: "' . includes_url('css/editor.css') . '",
+                            height: "300px",
+                            setup: function(editor) {
+                                editor.on("change", function() {
+                                    var content = editor.getContent();
+                                    $textarea.val(content);
+                                });
+                                editor.on("blur", function() {
+                                    var content = editor.getContent();
+                                    $textarea.val(content);
+                                });
+                            }
+                        },
+                        quicktags: true,
+                        mediaButtons: true
+                    });
+                    
+                    // Copy content from hidden textarea to editor on load
+                    var hiddenContent = $textarea.val();
+                    if (hiddenContent) {
+                        wp.editor.setContent("description-wysiwyg", hiddenContent);
+                    }
+                    
+                    // Update hidden textarea on form submit
+                    $("form#edittag, form#addtag").on("submit", function() {
+                        var editorContent = wp.editor.getContent("description-wysiwyg");
+                        $textarea.val(editorContent);
+                    });
+                });
+            ');
+        }
     }
     
     /**
-     * Add editor field to category edit form
+     * Add WYSIWYG editor to category description field
      */
-    public function edit_category_editor_field($term) {
-        ?>
-        <tr class="form-field term-description-wrap">
-            <th scope="row" valign="top"><label for="description"><?php _e('Description', 'wc-category-wysiwyg'); ?></label></th>
-            <td>
-                <?php 
-                wp_editor(html_entity_decode($term->description), 'description', [
-                    'textarea_name' => 'description',
-                    'textarea_rows' => 10,
-                    'media_buttons' => true,
-                    'teeny' => false,
-                    'wpautop' => true
-                ]);
-                ?>
-                <p class="description"><?php _e('The description is not prominent by default; however, some themes may show it.', 'wc-category-wysiwyg'); ?></p>
-            </td>
-        </tr>
-        <?php
+    public function add_wysiwyg_to_description() {
+        // This method is now handled by JavaScript in enqueue_admin_scripts
+        // Keeping this hook for potential future enhancements
     }
     
     /**
-     * Save category editor field
+     * Add nonce verification for category forms
      */
-    public function save_category_editor_field($term_id) {
-        if (isset($_POST['description'])) {
-            $description = wp_kses_post($_POST['description']);
-            wp_update_term($term_id, 'product_cat', ['description' => $description]);
+    public function add_category_nonce() {
+        wp_nonce_field('wc_category_wysiwyg_save', 'wc_category_wysiwyg_nonce');
+    }
+    
+    /**
+     * Verify nonce on category save
+     */
+    public function verify_category_nonce($term_id, $tt_id) {
+        if (!isset($_POST['wc_category_wysiwyg_nonce']) || 
+            !wp_verify_nonce($_POST['wc_category_wysiwyg_nonce'], 'wc_category_wysiwyg_save')) {
+            wp_die(__('Security check failed', 'wc-category-wysiwyg'));
         }
     }
     
@@ -132,7 +161,21 @@ class WC_Category_WYSIWYG {
      * Enqueue frontend scripts
      */
     public function enqueue_frontend_scripts() {
-        // Enqueue styles if needed for frontend display
+        if (is_product_category()) {
+            // Add custom styles for category descriptions if needed
+            wp_add_inline_style('woocommerce-general', '
+                .woocommerce-products-header .term-description {
+                    margin-bottom: 2em;
+                    line-height: 1.6;
+                }
+                .woocommerce-products-header .term-description p {
+                    margin-bottom: 1em;
+                }
+                .woocommerce-products-header .term-description p:last-child {
+                    margin-bottom: 0;
+                }
+            ');
+        }
     }
     
     /**
@@ -147,5 +190,5 @@ class WC_Category_WYSIWYG {
     }
 }
 
-// Initialize the plugin
+// Initialize plugin
 new WC_Category_WYSIWYG();
