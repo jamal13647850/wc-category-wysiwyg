@@ -1,5 +1,16 @@
 # WC Category WYSIWYG Changelog
 
+## [2.0.0] - 2025-11-03
+
+### Added
+- Persian (fa_IR) localization support
+- POT file for translation (5 translatable strings)
+- Compiled MO file for Persian language
+
+### Improved
+- Enhanced i18n implementation
+- Better multilingual support infrastructure
+
 ## [1.0.0] - 2024-11-03
 
 ### Added

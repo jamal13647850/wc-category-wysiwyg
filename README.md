@@ -8,6 +8,7 @@ WordPress mu-plugin that adds WYSIWYG editor to WooCommerce product category des
 - Supports full WordPress editor functionality
 - Compatible with WooCommerce
 - SEO-friendly output
+- **Full Persian (fa_IR) localization support**
 
 ## Installation
 
