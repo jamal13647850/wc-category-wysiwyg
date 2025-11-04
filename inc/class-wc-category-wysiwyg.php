@@ -168,7 +168,7 @@ class WC_Category_WYSIWYG {
         wp_nonce_field('wc_category_wysiwyg_save', 'wc_category_wysiwyg_nonce');
         ?>
         <div class="wc-category-description-wrapper">
-            <label for="description"><?php esc_html_e('توضیحات', 'wc-category-wysiwyg'); ?></label>
+            <label for="description"><?php esc_html_e('Description', 'wc-category-wysiwyg'); ?></label>
             <?php
             wp_editor(
                 $content,

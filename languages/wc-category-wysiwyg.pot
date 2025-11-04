@@ -1,28 +1,39 @@
-# Copyright (C) 2024 Sayyed Jamal Ghasemi
-# This file is distributed under the same license as the wc-category-wysiwyg package.
+# Copyright (C) 2025 Sayyed Jamal Ghasemi
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WC Category WYSIWYG 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/jamal13647850/wc-category-wysiwyg/issues\n"
-"POT-Creation-Date: 2024-11-03T21:58:00+00:00\n"
+"Project-Id-Version: WC Category WYSIWYG 2.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-category-wysiwyg\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: fa_IR\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"POT-Creation-Date: 2025-11-04T03:38:16+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wc-category-wysiwyg\n"
 
-#: wc-category-wysiwyg.php:85
+#. Plugin Name of the plugin
+#: wc-category-wysiwyg.php
+msgid "WC Category WYSIWYG"
+msgstr ""
+
+#. Description of the plugin
+#: wc-category-wysiwyg.php
+msgid "Adds WYSIWYG editor to WooCommerce product category descriptions"
+msgstr ""
+
+#. Author of the plugin
+#: wc-category-wysiwyg.php
+msgid "Sayyed Jamal Ghasemi"
+msgstr ""
+
+#. Author URI of the plugin
+#: wc-category-wysiwyg.php
+msgid "https://jamalghasemi.com"
+msgstr ""
+
+#: inc/class-wc-category-wysiwyg.php:171
 msgid "Description"
-msgstr "توضیحات"
-
-#: wc-category-wysiwyg.php:91
-msgid "The description is not prominent by default; however, some themes may show it."
-msgstr "توضیحات به طور پیش‌فرض برجسته نیست؛ با این حال، برخی قالب‌ها ممکن است آن را نمایش دهند."
-
-#: wc-category-wysiwyg.php:125
-msgid "WC Category WYSIWYG requires WooCommerce to be installed and active."
-msgstr "افزونه WC Category WYSIWYG به نصب و فعال بودن ووکامرس نیاز دارد."
+msgstr ""
